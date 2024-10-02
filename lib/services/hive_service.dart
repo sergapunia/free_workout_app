@@ -12,6 +12,10 @@ class HiveService {
     await box.add(data);
   }
 
+  Future<void> writePatternData(List<Map<String,String>> data,)async{
+    await patternsBox.add(data);
+  }
+
   Future<List<List<Map<String, String>>>> readDataPatterns(Box box) async {
     return List<List<Map<String, String>>>.from(box.values.map((dynamic value) {
       if (value is List<Map<dynamic, dynamic>>) {

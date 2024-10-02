@@ -33,7 +33,13 @@ class _PatternsTrainScreenState extends State<PatternsTrainScreen> {
   }
 
   void addDialog(BuildContext context) {
-    showDialog(context: context, builder: (context) => AddPatternDialog());
+    showDialog(
+        context: context,
+        builder: (context) => AddPatternDialog(
+              saveFunc: () {
+                read();
+              },
+            ));
   }
 
   @override
@@ -43,20 +49,63 @@ class _PatternsTrainScreenState extends State<PatternsTrainScreen> {
       title: "Шаблоны тренировок",
       child: Stack(
         children: [
-          ListView.builder(
-              itemCount: listData.length,
-              itemBuilder: (context, index) {
-                if (index == listData.length - 1) {
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 60.h),
-                    child: PatternContainer(),
-                  );
-                }
-                return PatternContainer();
-              }),
-          addButton(context),
+          Padding(
+            padding: EdgeInsets.only(top: 10.h),
+            child: ListView.builder(
+                itemCount: listData.length,
+                itemBuilder: (context, index) {
+                  if (index == listData.length - 1) {
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 60.h),
+                      child: pattern(index),
+                    );
+                  }
+                  return pattern(index);
+                }),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: addButton(context),
+          ),
         ],
       ),
+    );
+  }
+
+  Widget pattern(int index) {
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 10.w),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: const Color.fromARGB(255, 255, 197, 110),
+            ),
+            borderRadius: BorderRadius.circular(10.r),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Удалить шаблон",
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: Colors.red,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Icon(
+                Icons.delete_forever_outlined,
+                size: 22.r,
+                color: Colors.red,
+              )
+            ],
+          ),
+        ),
+        PatternContainer(
+          pattern: listData[index],
+        ),
+      ],
     );
   }
 

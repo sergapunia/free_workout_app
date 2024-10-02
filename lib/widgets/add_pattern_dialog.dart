@@ -1,26 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:free_workout/models/exercise_model.dart';
+import 'package:free_workout/services/hive_service.dart';
+import 'package:free_workout/widgets/buttom_dialog_pattern.dart';
+import 'package:free_workout/widgets/info_exerciese_for_pattern.dart';
 
 class AddPatternDialog extends StatefulWidget {
-  const AddPatternDialog({super.key});
-
+  AddPatternDialog({super.key, required this.saveFunc});
+  Function saveFunc;
   @override
   State<AddPatternDialog> createState() => _AddPatternDialogState();
 }
 
 class _AddPatternDialogState extends State<AddPatternDialog> {
-  Future<void> save() async {}
+  final hive = HiveService();
+  Future<void> save() async {
+    await hive.writePatternData(listPatterns.map((e) => e.toJson()).toList());
+    Navigator.pop(context);
+    widget.saveFunc();
+  }
+
   void add() {
-    listPatterns.add(
-      ExerciseModel(
-        name: "name",
-        description: "des",
-        targetGroup: "tar",
-        complexity: "легко",
-      ),
-    );
-    setState(() {});
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) {
+          return ButtomDialogPattern(
+            add: (value) {
+              listPatterns.add(value);
+              setState(() {});
+            },
+          );
+        });
   }
 
   List<ExerciseModel> listPatterns = [];
@@ -42,64 +53,30 @@ class _AddPatternDialogState extends State<AddPatternDialog> {
             child: SingleChildScrollView(
               child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: listPatterns.map((e) => containerInfo(e)).toList()),
+                  children: listPatterns
+                      .map((e) => Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Expanded(
+                                  child: InfoExercieseForPattern(value: e)),
+                              GestureDetector(
+                                onTap: () {
+                                  listPatterns.remove(e);
+                                  setState(() {});
+                                },
+                                child: Icon(
+                                  Icons.delete_forever_outlined,
+                                  color: Colors.red,
+                                  size: 30.r,
+                                ),
+                              ),
+                            ],
+                          ))
+                      .toList()),
             ),
           ),
           addButton(),
           saveButton(),
-        ],
-      ),
-    );
-  }
-
-  Widget containerInfo(ExerciseModel value) {
-    Color col = Colors.black;
-    Color colText = Colors.white;
-    if (value.complexity == "легко") {
-      col = Colors.blue;
-      colText = Colors.white;
-    }
-    if (value.complexity == "средне") {
-      col = Colors.yellow;
-      colText = Colors.black;
-    }
-    if (value.complexity == "тяжело") {
-      col = Colors.red;
-      colText = Colors.white;
-    }
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-      margin: EdgeInsets.symmetric(vertical: 3.h),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.orange,
-        borderRadius: BorderRadius.circular(10.r),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            value.name,
-            style: TextStyle(
-              fontSize: 18.sp,
-            ),
-          ),
-          const Spacer(),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 5.w),
-            decoration: BoxDecoration(
-              color: col,
-              borderRadius: BorderRadius.circular(10.r),
-            ),
-            child: Text(
-              value.complexity,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-                color: colText,
-              ),
-            ),
-          ),
         ],
       ),
     );
