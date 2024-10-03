@@ -12,7 +12,7 @@ class AppNavigator {
     Route route = MaterialPageRoute(
       builder: (context) => const HomePageScreen(),
     );
-    Navigator.push(context, route);
+    Navigator.pushReplacement(context, route);
   }
 
   static void toDataWorkoutScreen(BuildContext context) {
@@ -22,9 +22,9 @@ class AppNavigator {
     Navigator.push(context, route);
   }
 
-  static void toStartTrainScreen(BuildContext context) {
+  static void toStartTrainScreen(BuildContext context,List<ExerciseModel> pattern) {
     Route route = MaterialPageRoute(
-      builder: (context) => const StartTrainScreen(),
+      builder: (context) =>  StartTrainScreen(pattern:pattern),
     );
     Navigator.push(context, route);
   }

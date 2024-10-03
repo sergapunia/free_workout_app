@@ -4,7 +4,6 @@ import 'package:free_workout/models/exercise_model.dart';
 import 'package:free_workout/services/hive_service.dart';
 import 'package:free_workout/widgets/add_pattern_dialog.dart';
 import 'package:free_workout/widgets/pattern_container.dart';
-
 import '../constant/base_scaffold.dart';
 
 class PatternsTrainScreen extends StatefulWidget {
@@ -34,12 +33,13 @@ class _PatternsTrainScreenState extends State<PatternsTrainScreen> {
 
   void addDialog(BuildContext context) {
     showDialog(
-        context: context,
-        builder: (context) => AddPatternDialog(
-              saveFunc: () {
-                read();
-              },
-            ));
+      context: context,
+      builder: (context) => AddPatternDialog(
+        saveFunc: () {
+          read();
+        },
+      ),
+    );
   }
 
   @override

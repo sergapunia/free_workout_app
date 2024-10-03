@@ -13,6 +13,7 @@ void main() async {
   await Hive.openBox("Arms");
   await Hive.openBox("Breast");
   await Hive.openBox("Patterns");
+  await Hive.openBox("Hystori");
 
   runApp(const MyApp());
 }

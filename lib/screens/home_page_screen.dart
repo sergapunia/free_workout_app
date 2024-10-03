@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:free_workout/constant/base_scaffold.dart';
 import 'package:free_workout/navigator/app_navigator.dart';
 import 'package:free_workout/widgets/buttom_container.dart';
+import 'package:free_workout/widgets/buttom_dialog_start_train.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});
@@ -16,7 +17,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
   Widget build(BuildContext context) {
     return BaseScaffold(
       leading: false,
-
       title: "Free Workout",
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 50.h),
@@ -33,7 +33,12 @@ class _HomePageScreenState extends State<HomePageScreen> {
               text: "Начать",
               imagePath: "assets/images/train_fone.png",
               onTap: () {
-                AppNavigator.toStartTrainScreen(context);
+                showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (context) => ButtomDialogStartTrain(),
+                );
+                
               },
             ),
             ButtomContainer(
