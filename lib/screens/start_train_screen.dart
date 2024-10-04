@@ -54,18 +54,20 @@ class StartTrainScreen extends StatelessWidget {
                 saveData: saveData,
               ),
               Expanded(
-                  child: ListView.builder(
-                      itemCount: pattern.length,
-                      itemBuilder: (context, index) {
-                        if (results.length < pattern.length) {
-                          results.add(
-                              {"name": pattern[index].name, "results": []});
-                        }
-                        return TrainExercieseContainer(
-                            exerciese: pattern[index],
-                            onResultsChanged: updateResults,
-                            id: index);
-                      }))
+                  child: SingleChildScrollView(
+                child: Column(
+                  children: pattern.map((e) {
+                    int index = pattern.indexOf(e);
+                    if (results.length < pattern.length) {
+                      results.add({"name": pattern[index].name, "results": []});
+                    }
+                    return TrainExercieseContainer(
+                        exerciese: pattern[index],
+                        onResultsChanged: updateResults,
+                        id: index);
+                  }).toList(),
+                ),
+              )),
             ],
           ),
         ),

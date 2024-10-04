@@ -25,6 +25,11 @@ class _PatternsTrainScreenState extends State<PatternsTrainScreen> {
     setState(() {});
   }
 
+  void deletePattern(int index) async {
+    await hive.patternsBox.delete(index);
+    read();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -75,31 +80,36 @@ class _PatternsTrainScreenState extends State<PatternsTrainScreen> {
   Widget pattern(int index) {
     return Column(
       children: [
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 10.w),
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: const Color.fromARGB(255, 255, 197, 110),
-            ),
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Удалить шаблон",
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  color: Colors.red,
-                  fontWeight: FontWeight.w600,
-                ),
+        GestureDetector(
+          onTap: () {
+            deletePattern(index);
+          },
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 10.w),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color.fromARGB(255, 255, 197, 110),
               ),
-              Icon(
-                Icons.delete_forever_outlined,
-                size: 22.r,
-                color: Colors.red,
-              )
-            ],
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Удалить шаблон",
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    color: Colors.red,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Icon(
+                  Icons.delete_forever_outlined,
+                  size: 22.r,
+                  color: Colors.red,
+                )
+              ],
+            ),
           ),
         ),
         PatternContainer(
